@@ -1,7 +1,22 @@
 #Compte-rendu
 ##Séances du 21/01/2016 et du 22/01/2016
+###Réunion du 21/01/2016
+#####Présents
+**Tuteurs :** Nicoleta ROGOVSCHI, Lazhar LABIOD
+
+**Groupe :** Yanis CHERIFI (**chef de projet**), Medhi BEAUVILLAIN, Samy HAMICHE, Damien JACQUET
+#####Points abordés
+* Sujet du projet flou : besoin de cadrer le sujet.
+* Documentation : [R and Data Mining](https://cran.r-project.org/doc/contrib/Zhao_R_and_data_mining.pdf)
+
+#####Directives
+* Installation des outils.
+* Tests sur jeu de données.
+* Élaboration d'une démo.
+
 ###Tâches effectuées
 
+* Documentation, lecture des différent
 * Création d'un compte Twitter pour assurer la liaison à l'API Twitter
 * Commandes de connexion à l'API depuis RStudio
 * Déploiement de RStudio sur un serveur distant : [Serveur](http://81.4.125.72:8787/)
