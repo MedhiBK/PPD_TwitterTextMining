@@ -30,8 +30,9 @@ shinyUI(pageWithSidebar(
                 animate=animationOptions(interval=300, loop=T))
   ),
   
-  # Show a table summarizing the values entered
+  # Show a table summarizing the values enteredYy
   mainPanel(
-    tableOutput("values")
+    h2('List of tweets found'),
+    dataTableOutput('tweets_list')
   )
 ))
