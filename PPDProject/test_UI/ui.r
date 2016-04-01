@@ -1,5 +1,6 @@
 library(shiny)
 library(twitteR)
+library(shinyBS)
 
 
 shinyUI(pageWithSidebar(
@@ -18,8 +19,11 @@ shinyUI(pageWithSidebar(
                dateRangeInput('dateRange',
                label = 'Tweeté entre le',
                start = Sys.Date() - 30, end = Sys.Date() ,
+               start = , end = ,
                separator = " et le ", format = "dd/mm/yy", language = "fr"
                ),
+              bsTooltip("term", "Pour exclure un mot ajoutez un tiret - devant ce dernier",
+              "right", options = list(container = "body")),
                submitButton(text = "Recherche"),
                
                downloadButton("download", "Télécharger")),

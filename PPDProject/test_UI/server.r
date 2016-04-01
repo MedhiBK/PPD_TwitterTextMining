@@ -2,6 +2,7 @@ library(shiny)
 library(twitteR)
 library(wordcloud)
 library(tm)
+library(shinyBS)
 
 consumerKey = "fIZMJKnLQ2RuGQQEEizjy2GzA"   
 consumerSecret = "fEnlXSOzuMWUAcg9x9g2AAWjT3mxMQ4l4ZbeLnfcH7S4IEIV4L"
@@ -17,27 +18,8 @@ shinyServer(function(input,output){
     twListToDF(tweets)
   })
   
-  #output$table <- renderTable(function(){
-   # head(rawData()[1],n=input$cant)
-  #})
-  
-  output$tableau <- renderTable(function(){
-    tw.text <- enc2native(rawData()$text)
-    tw.text <- gsub(" ?(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", "", tw.text)
-    tw.text <- gsub(" ?(f|ht)(tp)(s?)(.*)", "", tw.text)
-    tw.text <- gsub(" (.*)[.0-9](.*)", "", tw.text)
-    tw.text <- tolower(tw.text)
-    tw.text <- removeWords(tw.text,c(stopwords(input$lang),"rt"))
-    tw.text <- removePunctuation(tw.text, TRUE)
-    tw.text <- unlist(strsplit(tw.text," "))
-    word <- sort(table(tw.text),TRUE)
-    wordc <- head(word,n=6)
-    vecteur1 <- names(wordc)
-    vecteur2 <- word
-    vecteur3 = c(vecteur1,vecteur2)
-    matrice = matrix(data = vecteur3,nrow=2,ncol=6,byrow=TRUE,dimnames = list(c("Mot","Fréquence")))
-    print(matrice)
-    matrice = matrice[,-1]
+  output$table <- renderTable(function(){
+    head(rawData()[1],n=input$cant)
   })
   
   output$wordcl <- renderPlot(function(){
@@ -53,8 +35,8 @@ shinyServer(function(input,output){
     word <- sort(table(tw.text),TRUE)
     wordc <- head(word,n=100)
     wordcloud_rep <- repeatable(wordcloud)
-    wordcloud_rep(names(wordc), wordc, scale=c(20,1),
-                  min.freq = input$freq, max.words=500,random.order=FALSE, ordered.colors = FALSE,
+    wordcloud_rep(names(wordc), wordc, scale=c(7,1),
+                  min.freq = 0, max.words=500,random.order=FALSE, ordered.colors = FALSE,
                   colors=rainbow(500), use.r.layout=FALSE, rot.per=.3)
     
     })
