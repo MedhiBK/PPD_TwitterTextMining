@@ -15,16 +15,15 @@ shinyServer(function(input,output){
   
   
   rawData <- (function(){
-    tweets <- searchTwitter(input$term, n=input$cant,lang=input$lang)
+    tweets <- searchTwitter(paste(input$term, " -RT"), n=input$cant,lang=input$lang, resultType = "recent", since =  as.character(input$search_date[1]), until = as.character(input$search_date[2]))
     twListToDF(tweets)
   })
   
-  output$table <- renderTable(function(){
+  output$table <- renderTable({
     head(rawData()[1],n=input$cant)
   })
   
-  output$tableau <- renderTable(function(){
-    
+  output$tableau <- renderTable({
     tw.text <- enc2native(rawData()$text)
     tw.text <- gsub(" ?(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", "", tw.text)
     tw.text <- gsub(" ?(f|ht)(tp)(s?)(.*)", "", tw.text)
@@ -40,11 +39,9 @@ shinyServer(function(input,output){
     vecteur2 <- word
     vecteur3 = c(vecteur1,vecteur2)
     matrice = matrix(data = vecteur3,nrow=2,ncol=6,byrow=TRUE,dimnames = list(c("Mot","Fréquence")))
-    print(matrice)
     matrice = matrice[,-1]
-    
   })
-  
+
   output$wordcl <- renderPlot(function(){
     
     tw.text <- enc2native(rawData()$text)
@@ -52,7 +49,7 @@ shinyServer(function(input,output){
     tw.text <- gsub(" ?(f|ht)(tp)(s?)(.*)", "", tw.text)
     tw.text <- gsub(" (.*)[.0-9](.*)", "", tw.text)
     tw.text <- tolower(tw.text)
-    tw.text <- removeWords(tw.text,c(stopwords(input$lang),"rt"))
+    tw.text <- removeWords(tw.text,c(stopwords(input$lang),"rt", "RT"))
     tw.text <- removePunctuation(tw.text, TRUE)
     tw.text <- unlist(strsplit(tw.text," "))
     word <- sort(table(tw.text),TRUE)
@@ -61,7 +58,6 @@ shinyServer(function(input,output){
     wordcloud_rep(names(wordc), wordc, scale=c(7,1),
                   min.freq = input$freq, max.words=500,random.order=FALSE, ordered.colors = FALSE,
                   colors=rainbow(500), use.r.layout=FALSE, rot.per=.3)
-    
     })
   
   output$download <- downloadHandler(filename = function() {paste(input$term, '.csv', sep='')},
