@@ -31,8 +31,9 @@ shinyUI(pageWithSidebar(
   
   mainPanel(
     h4("Top 5 des mots"),
-    tableOutput("table"),
-    plotOutput("wordcl"))
+    tableOutput("tableau"),
+    plotOutput("wordcl"),
+    tableOutput("table"))
     #h4("Liste des tweets"),
     #tableOutput("table"))
 ))

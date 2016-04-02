@@ -13,6 +13,7 @@ my_oauth <- setup_twitter_oauth(consumer_key = consumerKey, consumer_secret = co
 
 shinyServer(function(input,output){
   
+  
   rawData <- (function(){
     tweets <- searchTwitter(input$term, n=input$cant,lang=input$lang)
     twListToDF(tweets)
@@ -23,6 +24,7 @@ shinyServer(function(input,output){
   })
   
   output$tableau <- renderTable(function(){
+    
     tw.text <- enc2native(rawData()$text)
     tw.text <- gsub(" ?(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", "", tw.text)
     tw.text <- gsub(" ?(f|ht)(tp)(s?)(.*)", "", tw.text)
@@ -33,6 +35,7 @@ shinyServer(function(input,output){
     tw.text <- unlist(strsplit(tw.text," "))
     word <- sort(table(tw.text),TRUE)
     wordc <- head(word,n=6)
+
     vecteur1 <- names(wordc)
     vecteur2 <- word
     vecteur3 = c(vecteur1,vecteur2)
@@ -43,6 +46,7 @@ shinyServer(function(input,output){
   })
   
   output$wordcl <- renderPlot(function(){
+    
     tw.text <- enc2native(rawData()$text)
     tw.text <- gsub(" ?(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", "", tw.text)
     tw.text <- gsub(" ?(f|ht)(tp)(s?)(.*)", "", tw.text)
@@ -51,12 +55,11 @@ shinyServer(function(input,output){
     tw.text <- removeWords(tw.text,c(stopwords(input$lang),"rt"))
     tw.text <- removePunctuation(tw.text, TRUE)
     tw.text <- unlist(strsplit(tw.text," "))
-    
     word <- sort(table(tw.text),TRUE)
     wordc <- head(word,n=100)
     wordcloud_rep <- repeatable(wordcloud)
     wordcloud_rep(names(wordc), wordc, scale=c(7,1),
-                  min.freq = 0, max.words=500,random.order=FALSE, ordered.colors = FALSE,
+                  min.freq = input$freq, max.words=500,random.order=FALSE, ordered.colors = FALSE,
                   colors=rainbow(500), use.r.layout=FALSE, rot.per=.3)
     
     })
