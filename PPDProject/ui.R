@@ -8,7 +8,7 @@ shinyUI(pageWithSidebar(
   
   sidebarPanel(textInput("term", "Entrer un mot", "Data Mining"),
                sliderInput("cant", "Choisir un nombre de tweets",min=5,max=100, value = 20),
-                sliderInput("freq", "Fréquence d'apparition du mot",min=1,max=30, value = 1),
+                sliderInput("freq", "Fréquence minimale d'apparition du mot",min=1,max=30, value = 1),
                selectInput("lang", label = "Langue", 
                            choices = list("Français" = "fr", "English" = "en"), 
                            selected = 1),
@@ -28,8 +28,8 @@ shinyUI(pageWithSidebar(
   mainPanel(
     h4("Top 5 des mots"),
     tableOutput("tableau"),
+    h4("Wordcloud"),
     plotOutput("wordcl"),
+    h4("Liste des tweets"),
     tableOutput("table"))
-    #h4("Liste des tweets"),
-    #tableOutput("table"))
 ))
