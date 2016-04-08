@@ -1,35 +1,17 @@
-library(shiny)
-library(twitteR)
-library(shinyBS)
-
-
-shinyUI(pageWithSidebar(
-  headerPanel("Analyse de tweets"),
+fluidPage(
+  # Application title
+  titlePanel("Word Cloud"),
   
-  sidebarPanel(textInput("term", "Entrer un mot", "Data Mining"),
-               sliderInput("cant", "Choisir un nombre de tweets",min=5,max=100, value = 20),
-                sliderInput("freq", "Fréquence minimale d'apparition du mot",min=1,max=30, value = 1),
-               selectInput("lang", label = "Langue", 
-                           choices = list("Français" = "fr", "English" = "en"), 
-                           selected = 1),
-
-               dateRangeInput('search_date',
-               label = 'Tweeté entre le',
-               start = Sys.Date() - 30, end = Sys.Date() ,
-               separator = " et le ", format = "dd/mm/yy", language = "fr"
-               ),
-              bsTooltip("term", "Pour exclure un mot ajoutez un tiret - devant ce dernier",
-              "right", options = list(container = "body")),
-               submitButton(text = "Recherche"),
-              
-               downloadButton("download", "Télécharger")),
-  
-  
-  mainPanel(
-    h4("Top 5 des mots"),
-    tableOutput("tableau"),
-    h4("Wordcloud"),
-    plotOutput("wordcl"),
-    h4("Liste des tweets"),
-    tableOutput("table"))
-))
+  sidebarLayout(
+    # Sidebar with a slider and selection inputs
+    sidebarPanel(
+      textInput("term", "Entrer un mot", "Data Mining"),
+      actionButton("update", "Change")
+    ),
+    
+    # Show Word Cloud
+    mainPanel(
+      plotOutput("plot")
+    )
+  )
+)

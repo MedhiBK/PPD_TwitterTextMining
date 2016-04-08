@@ -1,72 +1,24 @@
-library(shiny)
-library(twitteR)
-library(wordcloud)
-library(tm)
-library(shinyBS)
-
-consumerKey = "fIZMJKnLQ2RuGQQEEizjy2GzA"   
-consumerSecret = "fEnlXSOzuMWUAcg9x9g2AAWjT3mxMQ4l4ZbeLnfcH7S4IEIV4L"
-accessToken = "4835171254-cMJUm81pHUMRNZCYd0xX0q8ZHzPQqDeqBaoCkM4"
-accessSecret = "NKhbXctNNEbdKGulVtb6hrydq3VXTriZw2kYMKgp7PJZL"
-my_oauth <- setup_twitter_oauth(consumer_key = consumerKey, consumer_secret = consumerSecret,
-                                access_token = accessToken, access_secret = accessSecret)
-
-shinyServer(function(input,output){
-  
-  
-  rawData <- (function(){
-    tweets <- searchTwitter(paste(input$term, " -RT"), n=input$cant,lang=input$lang, resultType = "recent", since =  as.character(input$search_date[1]), until = as.character(input$search_date[2]))
-    twListToDF(tweets)
+function(input, output, session) {
+  # Define a reactive expression for the document term matrix
+  terms <- reactive({
+    # Change when the "update" button is pressed...
+    input$update
+    # ...but not for anything else
+    isolate({
+      withProgress({
+        setProgress(message = "Processing corpus...")
+        getTermMatrix(input$term)
+      })
+    })
   })
   
-  output$table <- renderTable({
-    head(rawData()[1],n=input$cant)
+  # Make the wordcloud drawing predictable during a session
+  wordcloud_rep <- repeatable(wordcloud)
+  
+  output$plot <- renderPlot({
+    v <- terms()
+    wordcloud_rep(names(v), v, scale=c(4,0.5),
+                  min.freq = input$freq, max.words=input$max,
+                  colors=brewer.pal(8, "Dark2"))
   })
-  
-  output$wordcl <- renderPlot(function(){
-    
-    tw.text <- enc2native(rawData()$text)
-    tw.text <- gsub(" ?(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", "", tw.text)
-    tw.text <- gsub(" ?(f|ht)(tp)(s?)(.*)", "", tw.text)
-    tw.text <- gsub(" (.*)[.0-9](.*)", "", tw.text)
-    tw.text <- tolower(tw.text)
-    tw.text <- removeWords(tw.text,c(stopwords(input$lang),"rt", "RT"))
-    tw.text <- removePunctuation(tw.text, TRUE)
-    tw.text <- unlist(strsplit(tw.text," "))
-    word <- sort(table(tw.text),TRUE)
-    wordc <- head(word,n=100)
-    wordcloud_rep <- repeatable(wordcloud)
-    wordcloud_rep(names(wordc), wordc, scale=c(4,1),
-                  min.freq = input$freq, max.words=500,random.order=FALSE, ordered.colors = FALSE,
-                  colors=rainbow(500), use.r.layout=FALSE, rot.per=.3)
-  })
-  
-  output$tableau <- renderTable({
-    tw.text <- enc2native(rawData()$text)
-    tw.text <- gsub(" ?(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", "", tw.text)
-    tw.text <- gsub(" ?(f|ht)(tp)(s?)(.*)", "", tw.text)
-    tw.text <- gsub(" (.*)[.0-9](.*)", "", tw.text)
-    tw.text <- tolower(tw.text)
-    tw.text <- removeWords(tw.text,c(stopwords(input$lang),"rt"))
-    tw.text <- removePunctuation(tw.text, TRUE)
-    tw.text <- unlist(strsplit(tw.text," "))
-    word <- sort(table(tw.text),TRUE)
-    wordc <- head(word,n=6)
-
-    vecteur1 <- names(wordc)
-    vecteur2 <- word
-    vecteur3 = c(vecteur1,vecteur2)
-    matrice = matrix(data = vecteur3,nrow= 2,ncol=6,byrow=TRUE,dimnames = list(c("Mot","Fréquence")))
-    matrice = matrice[,-1]
-  })
-
- 
-  
-  output$download <- downloadHandler(filename = function() {paste(input$term, '.csv', sep='')},
-                                     content = function(file){
-                                       write.csv(rawData(), file)
-                                     }
-  )
-  
-  
-})
+}
