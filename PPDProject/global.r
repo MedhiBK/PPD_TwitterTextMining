@@ -12,19 +12,24 @@ accessSecret = "NKhbXctNNEbdKGulVtb6hrydq3VXTriZw2kYMKgp7PJZL"
 my_oauth <- setup_twitter_oauth(consumer_key = consumerKey, consumer_secret = consumerSecret,
                                 access_token = accessToken, access_secret = accessSecret)
 
-getTermMatrix <- memoise(function(term) {
-  text <- searchTwitter(paste(term, " -RT"), n=10)
+getTermMatrix <- memoise(function(term, lang, cant, search_date1, search_date2) {
+  text <- searchTwitter(paste(term, " -RT"), n=cant,lang=lang, resultType = "recent", since =  as.character(search_date1), until = as.character(search_date2))
   
-  twListToDF(text)
-  myCorpus = Corpus(VectorSource(text))
-  myCorpus = tm_map(myCorpus, content_transformer(tolower))
-  myCorpus = tm_map(myCorpus, removePunctuation)
-  myCorpus = tm_map(myCorpus, removeNumbers)
+  text <- twListToDF(text)
+  text$text <- enc2native(text$text)
+  text$text <- gsub(" ?(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", "", text$text)
+  text$text <- gsub(" ?(f|ht)(tp)(s?)(.*)", "", text$text)
+  text$text <- gsub(" (.*)[.0-9](.*)", "", text$text)
+  text$text <- tolower(text$text)
+  text$text <- removeWords(text$text,c(stopwords(lang),"rt", "RT"))
+  text$text <- removePunctuation(text$text, TRUE)
+  
+  myCorpus = Corpus(DataframeSource(text))
+  
   
   myDTM = TermDocumentMatrix(myCorpus,
                              control = list(minWordLength = 1))
-  
+ 
   m = as.matrix(myDTM)
-  
   sort(rowSums(m), decreasing = TRUE)
 })

@@ -1,24 +1,30 @@
 function(input, output, session) {
-  # Define a reactive expression for the document term matrix
   terms <- reactive({
-    # Change when the "update" button is pressed...
     input$update
-    # ...but not for anything else
     isolate({
       withProgress({
-        setProgress(message = "Processing corpus...")
-        getTermMatrix(input$term)
+        setProgress(message = "Analyse en cours...")
+        getTermMatrix(input$term, input$lang, input$cant, input$search_date[1], input$search_date[2])
       })
     })
   })
-  
-  # Make the wordcloud drawing predictable during a session
   wordcloud_rep <- repeatable(wordcloud)
-  
   output$plot <- renderPlot({
     v <- terms()
     wordcloud_rep(names(v), v, scale=c(4,0.5),
-                  min.freq = input$freq, max.words=input$max,
+                  min.freq = 0, max.words=50,
                   colors=brewer.pal(8, "Dark2"))
   })
+  
+  
+  output$table <- renderTable({
+    v <- terms()
+    head(cbind(v, names(v)),n=input$cant)
+  })
+#  
+  #output$download <- downloadHandler(filename = function() {paste(input$term, '.csv', sep='')},
+  #                                   content = function(file){
+  #                                     write.csv(names(v), file)
+  #                                   }
+  #)
 }
