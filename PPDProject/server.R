@@ -24,6 +24,15 @@ function(input, output, session) {
     head(cbind(v, names(v)),n=input$cant)
   })
   
+  output$fiveWord <- renderPlot({
+  
+    v<-terms()
+    barplot(v[1:5], 
+            main="Table Top Five",
+            ylab="Mot",
+            xlab="Occurence")
+  })
+  
   output$download <- downloadHandler(
     filename = function() {paste(input$term,'csv', sep='.')},
     content = function(file){
