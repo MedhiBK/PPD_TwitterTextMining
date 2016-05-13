@@ -3,7 +3,7 @@ shinyUI(fluidPage(
   headerPanel("Analyse de tweets"),
   
   sidebarPanel(textInput("term", "Entrer un mot", "zidane"),
-               sliderInput("cant", "Choisir un nombre de tweets",min=5,max=500, value = 10),
+               sliderInput("cant", "Choisir un nombre de tweets",min=5,max=500, value = 100),
                sliderInput("freq", "Fréquence d'apparition du mot",min=1,max=30, value = 5),
                selectInput("lang", label = "Langue", 
                            choices = list("Français" = "fr", "English" = "en"), 
@@ -24,6 +24,7 @@ shinyUI(fluidPage(
   mainPanel(
     plotOutput("plot"),
     tableOutput("table"))
+  
   #h4("Liste des tweets"),
   #tableOutput("table"))
 ))
