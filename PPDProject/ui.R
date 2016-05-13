@@ -22,12 +22,9 @@ shinyUI(fluidPage(
   
   
   mainPanel(
-    plotOutput("fiveWord"),
     h4("Wordcloud"),
     plotOutput("plot"),
-    h4("Liste des tweets"),
-    tableOutput("table"))
-  
-  #h4("Liste des tweets"),
-  #tableOutput("table"))
-))
+    h4("Top 5 des mots les plus fréquents"),
+    plotOutput("fiveWord")
+    
+)))

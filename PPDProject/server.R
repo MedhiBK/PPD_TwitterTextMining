@@ -17,18 +17,11 @@ function(input, output, session) {
                   colors=brewer.pal(8, "Dark2"))
   })
   
-  
-  output$table <- renderTable({
-    v <- terms()
-    print(v)
-    head(cbind(v, names(v)),n=input$cant)
-  })
-  
   output$fiveWord <- renderPlot({
   
     v<-terms()
     barplot(v[1:5], 
-            main="Table Top Five",
+            main=" ",
             ylab="Mot",
             xlab="Occurence")
   })
