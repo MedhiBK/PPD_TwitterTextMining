@@ -22,6 +22,7 @@ getTermMatrix <- memoise(function(term, lang, cant, search_date1, search_date2) 
   text$text <- gsub(" (.*)[.0-9](.*)", "", text$text)
   text$text <- tolower(text$text)
   text$text <- removeWords(text$text,c(stopwords(lang),"rt", "RT"))
+  text$text <- removeWords(text$text,term)
   text$text <- removePunctuation(text$text, TRUE)
   myCorpus = Corpus(DataframeSource(text[1]))
   myDTM = TermDocumentMatrix(myCorpus,
