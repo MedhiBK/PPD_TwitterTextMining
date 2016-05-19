@@ -27,7 +27,7 @@ getTermMatrix <- memoise(function(term, lang, cant, search_date1, search_date2) 
   myCorpus = Corpus(DataframeSource(text[1]))
   myDTM = TermDocumentMatrix(myCorpus,
                              control = list(minWordLength = 1))
- 
+  
   m = as.matrix(myDTM)
   sort(rowSums(m), decreasing = TRUE)
 })

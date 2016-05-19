@@ -18,7 +18,7 @@ function(input, output, session) {
   })
   
   output$fiveWord <- renderPlot({
-  
+    
     v<-terms()
     barplot(v[1:5], 
             main=" ",
