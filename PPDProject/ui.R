@@ -27,8 +27,22 @@ shinyUI(
              plotOutput("fiveWord")
           )
         ), 
-        tabPanel("Utilisateur", ""), 
-        tabPanel("Géographie", "")
+        tabPanel("Utilisateur", 
+           sidebarPanel(
+             textInput("term", "Entrer un nom d'utilisateur", "olkainry")
+           ),
+           mainPanel(
+           ) 
+        ), 
+        tabPanel("Géographie", 
+           sidebarPanel(
+             selectInput("country", label = "Choisir un pays", 
+                         choices = list("France" = "France", "Angleterre" = "England", "Italie" = "Italy"), 
+                         selected = 1) 
+           ),
+           mainPanel(
+           ) 
+        )
       )
     )
   )
