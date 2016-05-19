@@ -31,4 +31,9 @@ function(input, output, session) {
     content = function(file){
       write.table(terms(),file)}
   )
+  
+  output$map <- renderPlot({
+    map <- get_map(location = input$country, zoom = 5)
+    ggmap(map)
+  })
 }

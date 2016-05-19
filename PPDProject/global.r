@@ -4,6 +4,8 @@ library(wordcloud)
 library(tm)
 library(shiny)
 library(shinyBS)
+library(ggmap)
+library(mapproj)
 
 consumerKey = "fIZMJKnLQ2RuGQQEEizjy2GzA"   
 consumerSecret = "fEnlXSOzuMWUAcg9x9g2AAWjT3mxMQ4l4ZbeLnfcH7S4IEIV4L"

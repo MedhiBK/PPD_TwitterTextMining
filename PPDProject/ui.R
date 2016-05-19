@@ -41,6 +41,7 @@ shinyUI(
                          selected = 1) 
            ),
            mainPanel(
+             plotOutput("map")
            ) 
         )
       )
