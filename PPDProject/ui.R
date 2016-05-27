@@ -37,7 +37,7 @@ shinyUI(
         tabPanel("Géographie", 
            sidebarPanel(
              selectInput("country", label = "Choisir un pays", 
-                         choices = list("France" = "France", "Angleterre" = "England", "Italie" = "Italy"), 
+                         choices = list("France" = "France", "Angleterre" = "England", "Italie" = "Italy", "Allemagne" = "Germany", "Espagne" = "Spain"), 
                          selected = 1) 
            ),
            mainPanel(
