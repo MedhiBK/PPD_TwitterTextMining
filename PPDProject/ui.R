@@ -29,19 +29,10 @@ shinyUI(
         ), 
         tabPanel("Utilisateur", 
            sidebarPanel(
-             textInput("term", "Entrer un nom d'utilisateur", "olkainry")
+             textInput("username", "Entrer un nom d'utilisateur", "olkainry")
            ),
            mainPanel(
-           ) 
-        ), 
-        tabPanel("Géographie", 
-           sidebarPanel(
-             selectInput("country", label = "Choisir un pays", 
-                         choices = list("France" = "France", "Angleterre" = "England", "Italie" = "Italy", "Allemagne" = "Germany", "Espagne" = "Spain"), 
-                         selected = 1) 
-           ),
-           mainPanel(
-             plotOutput("map")
+             imageOutput("avatar")
            ) 
         )
       )

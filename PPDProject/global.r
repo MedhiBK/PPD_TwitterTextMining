@@ -4,10 +4,7 @@ library(wordcloud)
 library(tm)
 library(shiny)
 library(shinyBS)
-library(ggmap)
-library(mapproj)
-library(dismo)
-library(rgeos)
+library(RCurl)
 
 consumerKey = "fIZMJKnLQ2RuGQQEEizjy2GzA"   
 consumerSecret = "fEnlXSOzuMWUAcg9x9g2AAWjT3mxMQ4l4ZbeLnfcH7S4IEIV4L"
@@ -36,8 +33,6 @@ getTermMatrix <- memoise(function(term, lang, cant, search_date1, search_date2) 
   sort(rowSums(m), decreasing = TRUE)
 })
 
-getTweetsDF <- memoise(function(country, cant) {
-  geo <-  geocode(country)
-  text <- searchTwitter(" ", resultType = "recent", n=cant, geocode = paste (geo$longitude,geo$latitude,'500mi', sep = ",", collapse = NULL))
-  text <- twListToDF(text)
+getTwitterUser <- memoise(function(username) {
+  user<-getUser(username)
 })

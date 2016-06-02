@@ -26,29 +26,19 @@ function(input, output, session) {
             xlab="Occurence")
   })
   
+  output$avatar <- renderImage({
+    user<-getTwitterUser(input$username) 
+    cat(user$profileImageUrl)
+    return(list(
+      src = user$profileImageUrl,
+      SRC = user$profileImageUrl,
+      alt = user$screenName
+    ))
+  })
+  
   output$download <- downloadHandler(
     filename = function() {paste(input$term,'csv', sep='.')},
     content = function(file){
       write.table(terms(),file)}
   )
-  
-  output$map <- renderPlot({
-    tweetsDF <- getTweetsDF(input$country, 100)
-    emory <- gmap(input$country, zoom = 5, scale = 2)
-    for ( i in 1:nrow(tweetsDF)) { 
-      if(!is.na(tweetsDF[i,15])){
-        cat(tweetsDF[i,15])
-        cat(tweetsDF[i,16])
-        d <- data.frame(lat = c(tweetsDF[i,15]), lon = c(tweetsDF[i,16]))
-        coordinates(d) <- ~ lon + lat
-        projection(d) <- "+init=epsg:4326"
-        mm <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs"
-        d_mrc <- spTransform(d, CRS = CRS(mm))
-        d_mrc_bff <- gBuffer(d_mrc, width = 1000000)
-        plot(d_mrc_bff, col = alpha("red", .35), add = TRUE)
-      }
-    }
-    plot(emory)
-    
-  })
 }
