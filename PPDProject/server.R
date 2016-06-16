@@ -49,11 +49,6 @@ function(input, output, session) {
     return(paste(user$created))
   })
   
-  output$url <- renderText({
-    user<-getTwitterUser(input$username) 
-    return(paste(user$url))
-  })
-  
   output$followersCount <- renderText({
     user<-getTwitterUser(input$username) 
     return(paste(user$followersCount))
@@ -64,12 +59,10 @@ function(input, output, session) {
     return(paste(user$statusesCount))
   })
   
-  statusesCompare_rep <- repeatable(plot)
   output$statusesCompare <- renderPlot({
     pie(getStatusesList(), labels = getUserList(), main="Comparaison par activite")
   })
   
-  followersCompare_rep <- repeatable(plot)
   output$followersCompare <- renderPlot({
     pie(getFollowersList(), labels = getUserList(), main="Comparaison par activite")
   })

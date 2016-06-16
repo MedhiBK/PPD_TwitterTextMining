@@ -51,17 +51,14 @@ getStatusesList <- memoise(function() {
 
 addUserList <- memoise(function(a) {
   userList <<- append(userList,a)
-  cat(userList, sep="\n")
 })
 
 addFollowersList <- memoise(function(a) {
   followersList <<- append(followersList,a)
-  cat(followersList, sep="\n")
 })
 
 addStatusesList <- memoise(function(a) {
   statusesList <<- append(statusesList,a)
-  cat(statusesList, sep="\n")
 })
 
 getTwitterUser <- memoise(function(username) {

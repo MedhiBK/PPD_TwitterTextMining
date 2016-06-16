@@ -21,7 +21,7 @@ shinyUI(
                            label = 'Tweeté entre le',
                            start = Sys.Date() - 30, end = Sys.Date() ,
                            separator = " et le ", format = "dd/mm/yy", language = "fr"),
-            actionButton("update", "Change"),
+            actionButton("update", "Rafraîchir"),
             downloadButton("download", "Télécharger")
           ),
           mainPanel(
@@ -33,16 +33,15 @@ shinyUI(
         ), 
         tabPanel("Utilisateur", 
            sidebarPanel(
-             textInput("username", "Entrer un nom d'utilisateur", "")
+             textInput("username", "Entrer un nom d'utilisateur", ""),
+             submitButton("Rafraîchir")
            ),
            mainPanel(
              imageOutput("avatar", 50, 50),
              h4("Nom de l'utilisateur"),
              textOutput("screenName"),
-             h4("Date de creation"),
+             h4("Date de création"),
              textOutput("created"),
-             h4("Adresse URL"),
-             textOutput("url"),
              h4("Nombre de followers"),
              textOutput("followersCount"),
              h4("Nombre de tweets"),
