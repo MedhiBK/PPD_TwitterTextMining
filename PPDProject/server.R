@@ -28,12 +28,50 @@ function(input, output, session) {
   
   output$avatar <- renderImage({
     user<-getTwitterUser(input$username) 
-    cat(user$profileImageUrl)
+    addFollowersList(user$followersCount)
+    addStatusesList(user$statusesCount)
+    addUserList(user$screenName)
     return(list(
       src = user$profileImageUrl,
       SRC = user$profileImageUrl,
       alt = user$screenName
     ))
+  })
+  
+  
+  output$screenName <- renderText({
+    user<-getTwitterUser(input$username) 
+    return(paste(user$screenName))
+  })
+  
+  output$created <- renderText({
+    user<-getTwitterUser(input$username) 
+    return(paste(user$created))
+  })
+  
+  output$url <- renderText({
+    user<-getTwitterUser(input$username) 
+    return(paste(user$url))
+  })
+  
+  output$followersCount <- renderText({
+    user<-getTwitterUser(input$username) 
+    return(paste(user$followersCount))
+  })
+  
+  output$statusesCount <- renderText({
+    user<-getTwitterUser(input$username) 
+    return(paste(user$statusesCount))
+  })
+  
+  statusesCompare_rep <- repeatable(plot)
+  output$statusesCompare <- renderPlot({
+    pie(getStatusesList(), labels = getUserList(), main="Comparaison par activite")
+  })
+  
+  followersCompare_rep <- repeatable(plot)
+  output$followersCompare <- renderPlot({
+    pie(getFollowersList(), labels = getUserList(), main="Comparaison par activite")
   })
   
   output$download <- downloadHandler(

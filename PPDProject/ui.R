@@ -29,10 +29,22 @@ shinyUI(
         ), 
         tabPanel("Utilisateur", 
            sidebarPanel(
-             textInput("username", "Entrer un nom d'utilisateur", "olkainry")
+             textInput("username", "Entrer un nom d'utilisateur", "")
            ),
            mainPanel(
-             imageOutput("avatar")
+             imageOutput("avatar", 50, 50),
+             h4("Nom de l'utilisateur"),
+             textOutput("screenName"),
+             h4("Date de creation"),
+             textOutput("created"),
+             h4("Adresse URL"),
+             textOutput("url"),
+             h4("Nombre de followers"),
+             textOutput("followersCount"),
+             h4("Nombre de tweets"),
+             textOutput("statusesCount"),
+             plotOutput("statusesCompare"),
+             plotOutput("followersCompare")
            ) 
         )
       )
