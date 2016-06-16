@@ -33,9 +33,9 @@ getTermMatrix <- memoise(function(term, lang, cant, search_date1, search_date2) 
   sort(rowSums(m), decreasing = TRUE)
 })
 
-userList = c()
-followersList =c()
-statusesList =c()
+userList <<- c()
+followersList <<-c()
+statusesList <<-c()
 
 getUserList <- memoise(function() {
   return(userList)
@@ -50,18 +50,18 @@ getStatusesList <- memoise(function() {
 })
 
 addUserList <- memoise(function(a) {
-  userList <- append(userList,a)
-  cat(userList)
-  cat(followersList)
-  cat(statusesList)
+  userList <<- append(userList,a)
+  cat(userList, sep="\n")
 })
 
 addFollowersList <- memoise(function(a) {
-  followersList <- append(followersList,a)
+  followersList <<- append(followersList,a)
+  cat(followersList, sep="\n")
 })
 
 addStatusesList <- memoise(function(a) {
-  statusesList <- append(statusesList,a)
+  statusesList <<- append(statusesList,a)
+  cat(statusesList, sep="\n")
 })
 
 getTwitterUser <- memoise(function(username) {
