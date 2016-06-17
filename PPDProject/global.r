@@ -28,9 +28,12 @@ getTermMatrix <- memoise(function(term, lang, cant, search_date1, search_date2) 
   myCorpus = Corpus(DataframeSource(text[1]))
   myDTM = TermDocumentMatrix(myCorpus,
                              control = list(minWordLength = 1))
-  
   m = as.matrix(myDTM)
   sort(rowSums(m), decreasing = TRUE)
+})
+
+getAllData <- memoise(function(term, lang, cant, search_date1, search_date2) {
+  text <- searchTwitter(paste(term, " -RT"), n=cant,lang=lang, resultType = "recent", since =  as.character(search_date1), until = as.character(search_date2))
 })
 
 userList <<- c()

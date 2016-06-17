@@ -26,6 +26,12 @@ function(input, output, session) {
             xlab="Occurence")
   })
   
+  output$tweetList <- renderTable({
+  text <- twListToDF(getAllData(input$term, input$lang, input$cant, input$search_date[1], input$search_date[2]))
+  tri <- text[order(text[,3],decreasing = TRUE),]
+  donne <- matrix(tri$text,nrow=5,ncol = 1)
+  })
+  
   output$avatar <- renderImage({
     user<-getTwitterUser(input$username) 
     addFollowersList(user$followersCount)
@@ -70,6 +76,7 @@ function(input, output, session) {
   output$download <- downloadHandler(
     filename = function() {paste(input$term,'csv', sep='.')},
     content = function(file){
-      write.table(terms(),file)}
+      write.table(twListToDF(getAllData(input$term, input$lang, input$cant, input$search_date[1], input$search_date[2])),file)}
+      
   )
 }

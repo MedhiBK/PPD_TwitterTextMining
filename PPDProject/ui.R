@@ -28,7 +28,9 @@ shinyUI(
              h4("Wordcloud"),
              plotOutput("plot"),
              h4("Top 5 des mots les plus fréquents"),
-             plotOutput("fiveWord")
+             plotOutput("fiveWord"),
+             h4("Les tweets les plus populaires"),
+             tableOutput("tweetList")
           )
         ), 
         tabPanel("Utilisateur", 
