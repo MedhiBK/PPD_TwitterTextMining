@@ -37,6 +37,13 @@ function(input, output, session) {
     addFollowersList(user$followersCount)
     addStatusesList(user$statusesCount)
     addUserList(user$screenName)
+    output$statusesCompare <- renderPlot({
+      pie(getStatusesList(), labels = getUserList(), main="Comparaison par activite")
+    })
+    
+    output$followersCompare <- renderPlot({
+      pie(getFollowersList(), labels = getUserList(), main="Comparaison par activite")
+    })
     return(list(
       src = user$profileImageUrl,
       SRC = user$profileImageUrl,
@@ -63,14 +70,6 @@ function(input, output, session) {
   output$statusesCount <- renderText({
     user<-getTwitterUser(input$username) 
     return(paste(user$statusesCount))
-  })
-  
-  output$statusesCompare <- renderPlot({
-    pie(getStatusesList(), labels = getUserList(), main="Comparaison par activite")
-  })
-  
-  output$followersCompare <- renderPlot({
-    pie(getFollowersList(), labels = getUserList(), main="Comparaison par activite")
   })
   
   output$download <- downloadHandler(

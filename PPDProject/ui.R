@@ -9,7 +9,7 @@ shinyUI(
       navbarPage(
         title = 'Analyse de tweets',
         tabPanel("Thématique",  
-          sidebarPanel(textInput("term", "Entrer un mot", "zidane"),
+          sidebarPanel(textInput("term", "Entrer un mot", "euro"),
             bsTooltip("term", "Pour exclure un mot ajoutez un tiret - devant ce dernier",
                       "right", options = list(container = "body")),
             sliderInput("cant", "Choisir un nombre de tweets",min=5,max=500, value = 100),
@@ -21,7 +21,7 @@ shinyUI(
                            label = 'Tweeté entre le',
                            start = Sys.Date() - 30, end = Sys.Date() ,
                            separator = " et le ", format = "dd/mm/yy", language = "fr"),
-            actionButton("update", "Rafraîchir"),
+            actionButton("update","Rafraîchir"),
             downloadButton("download", "Télécharger")
           ),
           mainPanel(
@@ -35,8 +35,7 @@ shinyUI(
         ), 
         tabPanel("Utilisateur", 
            sidebarPanel(
-             textInput("username", "Entrer un nom d'utilisateur", ""),
-             submitButton("Rafraîchir")
+             textInput("username", "Entrer un nom d'utilisateur", "")
            ),
            mainPanel(
              imageOutput("avatar", 50, 50),
