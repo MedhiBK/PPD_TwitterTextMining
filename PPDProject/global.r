@@ -5,6 +5,7 @@ library(tm)
 library(shiny)
 library(shinyBS)
 library(RCurl)
+library(googleVis)
 
 consumerKey = "fIZMJKnLQ2RuGQQEEizjy2GzA"   
 consumerSecret = "fEnlXSOzuMWUAcg9x9g2AAWjT3mxMQ4l4ZbeLnfcH7S4IEIV4L"
@@ -39,30 +40,6 @@ getAllData <- memoise(function(term, lang, cant, search_date1, search_date2) {
 userList <<- c()
 followersList <<-c()
 statusesList <<-c()
-
-getUserList <- memoise(function() {
-  return(userList)
-})
-
-getFollowersList <- memoise(function() {
-  return(followersList)
-})
-
-getStatusesList <- memoise(function() {
-  return(statusesList)
-})
-
-addUserList <- memoise(function(a) {
-  userList <<- append(userList,a)
-})
-
-addFollowersList <- memoise(function(a) {
-  followersList <<- append(followersList,a)
-})
-
-addStatusesList <- memoise(function(a) {
-  statusesList <<- append(statusesList,a)
-})
 
 getTwitterUser <- memoise(function(username) {
   user<-getUser(username)

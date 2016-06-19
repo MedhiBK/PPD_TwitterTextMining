@@ -33,16 +33,19 @@ function(input, output, session) {
   })
   
   output$avatar <- renderImage({
-    user<-getTwitterUser(input$username) 
-    addFollowersList(user$followersCount)
-    addStatusesList(user$statusesCount)
-    addUserList(user$screenName)
-    output$statusesCompare <- renderPlot({
-      pie(getStatusesList(), labels = getUserList(), main="Comparaison par activite")
+    user<-getTwitterUser(input$username)
+    followersList <<- append(followersList,user$followersCount)
+    statusesList <<- append(statusesList,user$statusesCount)
+    userList <<- append(userList,user$screenName)
+    a = data.frame(userList, statusesList)
+    colnames(a) <- c("users", "statuses")
+    b = data.frame(userList, followersList)
+    colnames(b) <- c("users", "followers")
+    output$statusesCompare <- renderGvis({
+      gvisPieChart(a, labelvar = "users", numvar = "statuses", options = list(title = "Comparaison par activité"), "statuses")
     })
-    
-    output$followersCompare <- renderPlot({
-      pie(getFollowersList(), labels = getUserList(), main="Comparaison par activite")
+    output$followersCompare <- renderGvis({
+      gvisPieChart(b, labelvar = "users", numvar = "followers", options = list(title = "Comparaison par popularité"), "followers")
     })
     return(list(
       src = user$profileImageUrl,
@@ -50,7 +53,6 @@ function(input, output, session) {
       alt = user$screenName
     ))
   })
-  
   
   output$screenName <- renderText({
     user<-getTwitterUser(input$username) 
@@ -71,6 +73,7 @@ function(input, output, session) {
     user<-getTwitterUser(input$username) 
     return(paste(user$statusesCount))
   })
+  
   
   output$download <- downloadHandler(
     filename = function() {paste(input$term,'csv', sep='.')},

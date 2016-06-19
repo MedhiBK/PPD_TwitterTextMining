@@ -47,8 +47,8 @@ shinyUI(
              textOutput("followersCount"),
              h4("Nombre de tweets"),
              textOutput("statusesCount"),
-             plotOutput("statusesCompare"),
-             plotOutput("followersCompare")
+             htmlOutput("statusesCompare"),
+             htmlOutput("followersCompare")
            ) 
         )
       )
