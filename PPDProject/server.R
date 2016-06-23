@@ -16,6 +16,20 @@ function(input, output, session) {
                   rot.per = 0.3,
                   colors=brewer.pal(8, "Dark2"))
   })
+  observeEvent(input$reset,{
+    
+    userList <<- c()
+    followersList <<-c()
+    statusesList <<-c()
+    
+    output$statusesCompare <- renderGvis({
+      gvisPieChart(a, labelvar = "users", numvar = "statuses", options = list(title = "Comparaison par activité"), "statuses")
+    })
+    output$followersCompare <- renderGvis({
+      gvisPieChart(b, labelvar = "users", numvar = "followers", options = list(title = "Comparaison par popularité"), "followers")
+    })
+    updateTextInput(session, "username",value = "")
+  })
   
   output$fiveWord <- renderPlot({
     
